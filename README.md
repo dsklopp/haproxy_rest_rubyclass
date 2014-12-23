@@ -1,6 +1,6 @@
 # HaproxyRest
 
-TODO: Write a gem description
+Demonstration Gem meant to be run as a server daemon for querying and controlling HAProxy.
 
 ## Installation
 
@@ -20,7 +20,10 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+require 'haproxy_rest'
+HaproxyRest.run()
+```
 
 ## Contributing
 
