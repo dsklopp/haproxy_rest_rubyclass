@@ -21,6 +21,7 @@ module HaproxyRest
         raise IOError, "Error, the HAProxy Config File \"" + @config_file + "\" was not found."
       end
     end
+
     def backends()
       in_backend = nil
       backends={}
@@ -37,10 +38,33 @@ module HaproxyRest
       end
       return backends
     end
-    def active_backend()
-      return backends[ self.active_frontend ]
+
+    def _write_backend(backend)
+      backends = self.backends
+      if not backends.has_key?(backend)
+        # http://rubylearning.com/satishtalim/ruby_exceptions.html
+        raise ArgumentError, "Key \"" + backend.to_s  +  "\" not found in backend."
+      end
+      lines=[]
+      _get_config().each do |line|
+        words = line.split()
+        if words[0] == 'default_backend'
+          lines << 'default_backend ' + backend.to_s
+        else
+          lines << line
+        end
+      end
+      self._write_config(lines)
     end
-    def active_frontend
+    def backend(backend=nil)
+      if backend.nil?
+        return backends[ self.frontend ]
+      else
+        _write_backend(backend)
+      end
+    end
+
+    def frontend
       self._get_config.each do |line|
         words=line.split()
         if words[0] == 'default_backend'
@@ -48,6 +72,7 @@ module HaproxyRest
         end
       end
     end
+
     def _get_config()
       lines=[]
       File.open(@config_file).each do |line|
@@ -55,10 +80,11 @@ module HaproxyRest
       end
       return lines
     end
+
     def _write_config(lines)
       file=File.open(@config_file, 'w')
       lines.each do |line|
-        file.write(line)
+        file.write(line+"\n")
       end
       file.close
     end
