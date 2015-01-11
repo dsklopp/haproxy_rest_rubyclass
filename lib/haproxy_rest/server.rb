@@ -7,7 +7,7 @@ DESCRIPTION: Server daemon for HAProxy, used to start and stop the daemon
 module HaproxyRest
   class Server
     def initialize()
-      puts "Initialized HaproxyRest::" + self.class
+      puts "Initialized HaproxyRest::" + self.class.to_s
     end
   end
 end
