@@ -2,6 +2,18 @@
 
 Demonstration Gem meant to be run as a server daemon for querying and controlling HAProxy.
 
+## Design
+A single object represents HAProxy config
+
+Another object represents HAProxy service daemon
+
+Another object represents a listening server daemon.
+
+The Listening server daemon only supports two operations, with three results.
+ 1. Get backend config, returns the HAProxy backend config
+ 2. Modify listening server, sets the HAProxy backend config and reloads HAProxy
+ 3. Invalid input, returns error.
+
 ## Installation
 
 Add this line to your application's Gemfile:
