@@ -13,8 +13,54 @@ DESCRIPTION: A representation of HAProxy config file.
 
 module HaproxyRest
   class Config
-    def initialize()
-      puts "Initialized HaproxyRest::" + self.class
+    def initialize(config_file="/etc/haproxy/haproxy.cfg")
+      puts "Initialized HaproxyRest::" + self.class.to_s
+      @config_file=config_file
+      # http://rubylearning.com/satishtalim/ruby_exceptions.html
+      if not File.exist?(config_file)
+        raise IOError, "Error, the HAProxy Config File \"" + @config_file + "\" was not found."
+      end
+    end
+    def backends()
+      in_backend = nil
+      backends={}
+      self._get_config.each do |line|
+        words = line.split()
+        if in_backend and words[0] == 'server'
+          backends[in_backend] << words[1..-1]
+        elsif words[0] == "backend"
+          in_backend=words[1]
+          backends[in_backend] = []
+        else
+          in_backend=nil
+        end
+      end
+      return backends
+    end
+    def active_backend()
+      return backends[ self.active_frontend ]
+    end
+    def active_frontend
+      self._get_config.each do |line|
+        words=line.split()
+        if words[0] == 'default_backend'
+          return words[1]
+        end
+      end
+    end
+    def _get_config()
+      lines=[]
+      File.open(@config_file).each do |line|
+        lines << line.strip()
+      end
+      return lines
+    end
+    def _write_config(lines)
+      file=File.open(@config_file, 'w')
+      lines.each do |line|
+        file.write(line)
+      end
+      file.close
     end
   end
 end
