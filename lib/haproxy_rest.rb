@@ -10,7 +10,7 @@ require_relative 'haproxy_rest/server'
 require_relative 'haproxy_rest/api'
 
 module HaproxyRest
-  class Server
+  class Haproxy
     attr_reader :title
     def initialize()
       @title = "HAProxy REST API Daemon Module"
