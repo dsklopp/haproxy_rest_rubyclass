@@ -14,6 +14,7 @@ module HaproxyRest
     attr_reader :title
     def initialize()
       @title = "HAProxy REST API Daemon Module"
+      Api.new()
     end
   end
 end

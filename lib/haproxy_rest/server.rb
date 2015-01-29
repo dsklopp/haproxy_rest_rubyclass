@@ -14,6 +14,9 @@ module HaproxyRest
       end
       puts "Initialized HaproxyRest::" + self.class.to_s
     end
+    def backends()
+      return @config.backends
+    end
     def backend(backend=nil)
       if backend
         @config.backend(backend)
