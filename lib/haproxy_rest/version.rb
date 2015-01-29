@@ -5,5 +5,5 @@ DESCRIPTION: Placeholder to import all relevant code
 '''
 
 module HaproxyRest
-  VERSION = "0.0.1"
+  VERSION = "0.0.3"
 end

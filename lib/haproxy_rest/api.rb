@@ -19,10 +19,10 @@ require_relative 'config'
 module HaproxyRest
   class Api
     attr_accessor :server
-    def initialize port=8181
-      @daemon = HaproxyRest::Server.new("minimal.cfg")
+    def initialize port=31313
+      @daemon = HaproxyRest::Server.new("/etc/haproxy/haproxy.cfg")
       #@data.default="NONE"
-      @port = port || 8181
+      @port = port || 31313
       @server = TCPServer.new @port
       loop {
         client = server.accept
